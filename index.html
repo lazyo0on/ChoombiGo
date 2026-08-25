@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>조선 궁궐의 원혼들</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- Start Screen -->
+        <div id="start-screen" class="screen active">
+            <h1>조선 궁궐의 원혼들</h1>
+            <p>궁궐에 떠도는 15마리의 억울한 원혼들...</p>
+            <p style="font-size: 0.9rem; color: #a89f91; margin-bottom: 10px;">PC: 방향키 이동, Z(조사), X(부적), C(단서록)</p>
+            <p style="font-size: 0.9rem; color: #a89f91; margin-bottom: 30px;">모바일: 좌측 조이스틱, 우측 버튼 사용</p>
+            <button id="start-btn">게임 시작</button>
+        </div>
+
+        <!-- Game World -->
+        <div id="game-screen" class="screen">
+            <canvas id="game-canvas"></canvas>
+            
+            <!-- Minimap -->
+            <div id="minimap-container">
+                <canvas id="minimap-canvas" width="150" height="150"></canvas>
+            </div>
+            
+            <!-- Toast Notification -->
+            <div id="toast-message" class="hidden">아이템을 획득했습니다!</div>
+
+            <!-- UI Overlay (Hints, Status) -->
+            <div id="ui-overlay">
+                <div class="status-bar">
+                    <span id="speed-status">속도: 보통</span><br>
+                    <span id="talisman-count">부적(X): 0개</span>
+                </div>
+                <div class="hint-inventory" id="hint-inventory-box">
+                    <h3>단서 보관함 (클릭 시 확대)</h3>
+                    <ul id="hint-list"></ul>
+                </div>
+            </div>
+
+            <!-- Mobile Controls -->
+            <div id="mobile-controls">
+                <div id="joystick-zone">
+                    <div id="joystick-base">
+                        <div id="joystick-stick"></div>
+                    </div>
+                </div>
+                <div id="action-buttons">
+                    <button id="btn-inventory" class="control-btn" style="border-color:#55ccff; color:#bbddff;">단서(C)</button>
+                    <button id="btn-talisman" class="control-btn attack-btn">부적(X)</button>
+                    <button id="btn-interact" class="control-btn interact-btn">조사(Z)</button>
+                </div>
+            </div>
+
+            <!-- Dialogue Box -->
+            <div id="dialogue-box" class="hidden">
+                <div id="speaker-name">귀신</div>
+                <div id="dialogue-text">내 억울한 사연 좀 들어보련...?</div>
+                <div id="choices-container">
+                    <!-- Buttons go here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Modal (Paused) -->
+        <div id="inventory-modal" class="screen">
+            <div class="modal-content">
+                <h2 style="color: #ffd700; margin-top:0; border-bottom:1px solid #8b7355; padding-bottom:10px;">획득한 단서 (게임 일시정지)</h2>
+                <div id="inventory-details" style="margin-bottom:20px;">
+                    <!-- 단서 상세 정보가 여기에 표시됩니다 -->
+                </div>
+                <button id="close-inventory-btn" style="width:100%; font-size:1rem;">닫기 (C)</button>
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="game-over-screen" class="screen">
+            <h1 style="color: #ff3333;">죽음</h1>
+            <p id="game-over-message">거짓말에 속아 원한에 휩싸였습니다...</p>
+            <button id="restart-btn">다시 시작</button>
+        </div>
+        
+        <!-- Victory Screen -->
+        <div id="victory-screen" class="screen">
+            <h1 style="color: #ffd700;">퇴마 성공!</h1>
+            <p>모든 원혼의 거짓말을 논파하여 무사히 퇴마하였습니다.</p>
+            <button id="restart-btn-victory">처음으로</button>
+        </div>
+    </div>
+    <script src="game.js"></script>
+</body>
+</html>
