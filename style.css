@@ -58,9 +58,10 @@ button { padding: 10px 20px; font-size: 1.2rem; background-color: #4a3b2c; color
 
 /* Mobile Controls */
 #mobile-controls {
-    position: absolute; bottom: 30px; left: 0; right: 0; display: none; justify-content: space-between; padding: 0 30px; z-index: 30;
+    position: absolute; bottom: 30px; left: 0; right: 0; display: flex; justify-content: space-between; padding: 0 30px; z-index: 30;
+    pointer-events: none; /* Let clicks pass through if not on a button */
 }
-#joystick-zone { width: 150px; height: 150px; position: relative; }
+#joystick-zone { width: 150px; height: 150px; position: relative; pointer-events: auto; touch-action: none; }
 #joystick-base {
     width: 120px; height: 120px; background: rgba(15, 15, 18, 0.6);
     border: 3px solid #b89f78; border-radius: 50%; position: absolute; top: 15px; left: 15px;
@@ -68,16 +69,20 @@ button { padding: 10px 20px; font-size: 1.2rem; background-color: #4a3b2c; color
 #joystick-stick {
     width: 50px; height: 50px; background: radial-gradient(circle, #d4af37, #8b7355);
     border-radius: 50%; position: absolute; top: 35px; left: 35px; box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+    pointer-events: none;
 }
-#action-buttons { display: flex; gap: 15px; align-items: flex-end; }
+#action-buttons { display: flex; gap: 15px; align-items: flex-end; pointer-events: auto; }
 .control-btn {
     width: 65px; height: 65px; border-radius: 50%; background: rgba(15, 15, 18, 0.85);
     border: 2px solid #b89f78; color: #e8dcc4; font-weight: bold; font-family: 'Batang', serif;
     display: flex; justify-content: center; align-items: center; box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+    user-select: none; -webkit-user-select: none;
 }
 .control-btn:active { background: rgba(100, 80, 60, 0.9); }
 .attack-btn { border-color: #ff6b6b; color: #ffbbbb; }
 .interact-btn { border-color: #55ff55; color: #bbffbb; }
+
+
 
 /* Dialogue Box (Visual Novel Style) */
 #dialogue-box {
@@ -143,9 +148,25 @@ button { padding: 10px 20px; font-size: 1.2rem; background-color: #4a3b2c; color
 /* Inventory Modal */
 .modal-content {
     background: rgba(20, 20, 20, 0.95); border: 3px solid #8b7355; border-radius: 10px;
-    padding: 20px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; pointer-events: auto;
 }
 .inv-hint-item { border-bottom: 1px solid #4a3b2c; padding: 15px 0; }
 .inv-hint-title { font-weight: bold; color: #ffd700; margin-bottom: 8px; font-size:1.1rem; }
 .inv-hint-desc { color: #e0e0e0; font-size: 0.95rem; line-height:1.6; word-break: keep-all; }
 .inv-hint-empty { color: #888; text-align: center; padding: 20px; }
+/* Responsive adjustments for tablets and mobiles */
+@media (max-width: 900px) {
+    #dialogue-box {
+        bottom: 120px; /* Leave space for joystick */
+        padding: 20px 25px;
+        width: 95%; max-width: 100%;
+    }
+    #speaker-name { font-size: 1.3rem; margin-bottom: 10px; }
+    #dialogue-text { font-size: 1.1rem; margin-bottom: 15px; min-height: 50px; }
+    .choice-btn { padding: 12px 15px; font-size: 1rem; }
+    
+    #mobile-controls { bottom: 15px; padding: 0 15px; }
+    #joystick-zone { width: 120px; height: 120px; }
+    #joystick-base { width: 100px; height: 100px; top: 10px; left: 10px; }
+    #joystick-stick { width: 40px; height: 40px; top: 30px; left: 30px; }
+    .control-btn { width: 55px; height: 55px; font-size: 0.9rem; }
+}
