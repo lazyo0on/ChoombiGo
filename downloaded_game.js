@@ -422,12 +422,9 @@ function update(dt) {
     player.x = Math.max(0, Math.min(WORLD_WIDTH - player.width, player.x));
     player.y = Math.max(0, Math.min(WORLD_HEIGHT - player.height, player.y));
 
-    // Camera with 0.7 zoom factor
-    let zoom = 0.7;
-    let visibleW = canvas.width / zoom;
-    let visibleH = canvas.height / zoom;
-    camera.x = Math.max(0, Math.min(WORLD_WIDTH - visibleW, player.x - visibleW / 2));
-    camera.y = Math.max(0, Math.min(WORLD_HEIGHT - visibleH, player.y - visibleH / 2));
+    // Camera
+    camera.x = Math.max(0, Math.min(WORLD_WIDTH - canvas.width, player.x - canvas.width / 2));
+    camera.y = Math.max(0, Math.min(WORLD_HEIGHT - canvas.height, player.y - canvas.height / 2));
 
     // Items
     items.forEach(item => {
@@ -471,9 +468,7 @@ function draw() {
     }
     // Fill the background
     // Since groundPattern is a pattern, we need to apply the camera translation first so the pattern moves with the map
-    ctx.save(); 
-    ctx.scale(0.7, 0.7);
-    ctx.translate(-camera.x, -camera.y);
+    ctx.save(); ctx.translate(-camera.x, -camera.y);
     
     // Fill entire world with ground pattern to ensure consistency
     ctx.fillRect(0, 0, WORLD_WIDTH, WORLD_HEIGHT);
@@ -545,14 +540,7 @@ function draw() {
             // Draw Sprite
             if (g.image && g.image.width > 0) {
                 ctx.globalAlpha = 0.9;
-                ctx.save();
-                ctx.translate(g.x + g.width/2, g.y + g.height/2 + floatY);
-                if (g.stunned <= 0) {
-                    let wobble = Math.sin(Date.now() / 150) * 0.1;
-                    ctx.rotate(wobble);
-                }
-                ctx.drawImage(g.image, -g.width/2, -g.height/2, g.width, g.height);
-                ctx.restore();
+                ctx.drawImage(g.image, g.x, g.y + floatY, g.width, g.height);
                 ctx.globalAlpha = 1.0;
             }
             
@@ -572,18 +560,7 @@ function draw() {
     });
 
     // Player
-    ctx.save();
-    ctx.translate(player.x + player.width/2, player.y + player.height/2);
-    let isMoving = (keys['ArrowLeft'] || keys['a'] || keys['ArrowRight'] || keys['d'] || keys['ArrowUp'] || keys['w'] || keys['ArrowDown'] || keys['s'] || (joystick.active && joystick.distance > 0));
-    if (isMoving) {
-        let playerWobble = Math.sin(Date.now() / 100) * 0.15;
-        ctx.rotate(playerWobble);
-    }
-    ctx.fillStyle = player.color; 
-    ctx.fillRect(-player.width/2, -player.height/2, player.width, player.height);
-    ctx.restore();
-    
-    // Draw interaction radius
+    ctx.fillStyle = player.color; ctx.fillRect(player.x, player.y, player.width, player.height);
     ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)'; ctx.beginPath(); ctx.arc(player.x + player.width/2, player.y + player.height/2, 60, 0, Math.PI*2); ctx.stroke();
     ctx.restore();
 }
@@ -603,9 +580,7 @@ function drawMinimap() {
     minimapCtx.fillStyle = '#ff3333'; ghosts.forEach(g => { if (!g.resolved) minimapCtx.fillRect(g.x * scaleX, g.y * scaleY, 3, 3); });
     
     minimapCtx.strokeStyle = 'rgba(255, 255, 255, 0.6)'; minimapCtx.lineWidth = 1;
-    let visibleW = canvas.width / 0.7;
-    let visibleH = canvas.height / 0.7;
-    minimapCtx.strokeRect(camera.x * scaleX, camera.y * scaleY, visibleW * scaleX, visibleH * scaleY);
+    minimapCtx.strokeRect(camera.x * scaleX, camera.y * scaleY, canvas.width * scaleX, canvas.height * scaleY);
 }
 
 function checkInteraction() {
